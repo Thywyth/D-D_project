@@ -1,6 +1,6 @@
 import React from 'react';
 /* CharacterSheet types come from sub-components */
-import type { IInventoryItem, ICoins } from '../../../../shared/types/character';
+import type { IInventoryItem } from '../../../../shared/types/character';
 import { useCharacterStore } from '../../stores/characterStore';
 import { useRBAC } from '../../hooks/useRBAC';
 import { useAuthStore } from '../../stores/authStore';
