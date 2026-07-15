@@ -9,7 +9,7 @@ import {
 } from '../../../shared/types/index';
 import { useAuthStore } from '../stores/authStore';
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000';
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://dandd-project.onrender.com';
 
 class SocketService {
   private socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null;
