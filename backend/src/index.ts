@@ -54,6 +54,17 @@ app.use(cors({
   credentials: true // Важливо для авторизації (cookies/tokens)
 }));
 
+// Використовуй цей код у своєму index.ts
+app.use(cors({
+  origin: [
+    'http://localhost:5173', 
+    'https://dandd-online.onrender.com'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: '10mb' }));
 
 // ─── REST API Routes ──────────────────────────────────────────────
