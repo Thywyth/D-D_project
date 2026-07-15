@@ -37,12 +37,23 @@ const io = new SocketServer(httpServer, {
 });
 
 // ─── Middleware ────────────────────────────────────────────────────
-app.use(
-  cors({
-    origin: env.CORS_ORIGIN,
-    credentials: true,
-  }),
-);
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://dnd-online.onrender.com' // Додай сюди свій бойовий домен
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // !origin дозволяє запити з Postman або сервер-сервер (без браузера)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Важливо для авторизації (cookies/tokens)
+}));
+
 app.use(express.json({ limit: '10mb' }));
 
 // ─── REST API Routes ──────────────────────────────────────────────
