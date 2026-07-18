@@ -9,8 +9,12 @@ import {
 } from '../../../shared/types/index';
 import { useAuthStore } from '../stores/authStore';
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000';
-
+// Якщо є VITE_SOCKET_URL — беремо його. 
+// Якщо ні, але є VITE_API_URL — беремо його і відрізаємо '/api'.
+// Якщо нічого немає (локальна розробка) — ставимо порт твого бекенду (наприклад, 10000).
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 
+  (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:10000');
+  
 class SocketService {
   private socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null;
 
