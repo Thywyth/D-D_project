@@ -28,40 +28,33 @@ import { initializeSocketHandlers } from './sockets/index.js';
 const app = express();
 const httpServer = createServer(app);
 
+// ─── Дозволені домени (Єдине джерело правди) ──────────────────────
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://dandd-online.onrender.com'
+];
+
+// ─── Налаштування Socket.IO ───────────────────────────────────────
 const io = new SocketServer(httpServer, {
   cors: {
-    origin: env.CORS_ORIGIN,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    origin: allowedOrigins, // Використовуємо наш масив доменів
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     credentials: true,
   },
 });
 
 // ─── Middleware ────────────────────────────────────────────────────
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://dnd-online.onrender.com' // Додай сюди свій бойовий домен
-];
-
 app.use(cors({
   origin: function (origin, callback) {
-    // !origin дозволяє запити з Postman або сервер-сервер (без браузера)
+    // Дозволяємо запити без origin (Postman) та з наших доменів
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true // Важливо для авторизації (cookies/tokens)
-}));
-
-// Використовуй цей код у своєму index.ts
-app.use(cors({
-  origin: [
-    'http://localhost:5173', 
-    'https://dandd-online.onrender.com'
-  ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
